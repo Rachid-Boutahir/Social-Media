@@ -1,0 +1,57 @@
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: user
+          uri: lb://USER
+          predicates:
+              - Path=/api/v1/users/**
+        - id: reaction
+          uri: lb://REACTION
+          predicates:
+              - Path=/api/v1/reaction/**
+        - id: publication
+          uri: lb://PUBLICATION
+          predicates:
+              - Path=/api/v1/posts/**
+        - id: media
+          uri: lb://MEDIA
+          predicates:
+              - Path=/api/v1/media/**
+        - id: group
+          uri: lb://GROUP
+          predicates:
+              - Path=/api/group/**
+              - Path=/api/groupUser/**
+        - id: friendship
+          uri: lb://FRIEND
+          predicates:
+              - Path=/api/v1/friend-ships/**
+        - id: notification
+          uri: lb://NOTIFICATION
+          predicates:
+              - Path=/notifications/**
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:7080/realms/master/protocol/openid-connect/certs
+
+server:
+  port: 3333
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0

@@ -1,0 +1,130 @@
+version: '3.1'
+
+services:
+  friendship-db:
+    container_name: friendship-microservice-db
+    image: postgres:16
+    environment:
+      POSTGRES_USER: friendship_microservice
+      POSTGRES_PASSWORD: friendship_microservice
+      PGDATA: /data/postgres
+    volumes:
+      - friendship-db:/data/postgres
+    ports:
+      - "5228:5432"
+    networks:
+      - db
+    restart: unless-stopped
+
+  notification-db:
+    container_name: notification-microservice-db
+    image: postgres:16
+    environment:
+      POSTGRES_USER: notification_microservice
+      POSTGRES_PASSWORD: notification_microservice
+      PGDATA: /data/postgres
+    volumes:
+      - notification-db:/data/postgres
+    ports:
+      - "5227:5432"
+    networks:
+      - db
+    restart: unless-stopped
+
+  group-db:
+    container_name: group-microservice-db
+    image: postgres:16
+    environment:
+      POSTGRES_USER: group_microservice
+      POSTGRES_PASSWORD: group_microservice
+      PGDATA: /data/postgres
+    volumes:
+      - group-db:/data/postgres
+    ports:
+      - "5225:5432"
+    networks:
+      - db
+    restart: unless-stopped
+
+  media-db:
+    container_name: media-microservice-db
+    image: postgres:16
+    environment:
+      POSTGRES_USER: media_microservice
+      POSTGRES_PASSWORD: media_microservice
+      PGDATA: /data/postgres
+    volumes:
+      - media-db:/data/postgres
+    ports:
+      - "5224:5432"
+    networks:
+      - db
+    restart: unless-stopped
+
+  reaction-db:
+    container_name: reaction-microservice-db
+    image: postgres:16
+    environment:
+      POSTGRES_USER: reaction_microservice
+      POSTGRES_PASSWORD: reaction_microservice
+      PGDATA: /data/postgres
+    volumes:
+      - reaction-db:/data/postgres
+    ports:
+      - "5226:5432"
+    networks:
+      - db
+    restart: unless-stopped
+
+  publication-db:
+    container_name: publication-microservice-db
+    image: postgres:16
+    environment:
+      POSTGRES_USER: publication_microservice
+      POSTGRES_PASSWORD: publication_microservice
+      PGDATA: /data/postgres
+    volumes:
+      - publication-db:/data/postgres
+    ports:
+      - "5223:5432"
+    networks:
+      - db
+    restart: unless-stopped
+
+  user-db:
+    container_name: user-microservice-db
+    image: postgres:16
+    environment:
+      POSTGRES_USER: user_microservice
+      POSTGRES_PASSWORD: user_microservice
+      PGDATA: /data/postgres
+    volumes:
+      - user-db:/data/postgres
+    ports:
+      - "5222:5432"
+    networks:
+      - db
+    restart: unless-stopped
+
+  zipkin:
+    container_name: zipkin2
+    image: openzipkin/zipkin
+    ports:
+      - "9411:9411"
+    networks:
+      - zipkin
+
+networks:
+  db:
+    driver: bridge
+  zipkin:
+    driver: bridge
+
+volumes:
+  notification-db:
+  group-db:
+  media-db:
+  reaction-db:
+  publication-db:
+  user-db:
+  friendship-db:

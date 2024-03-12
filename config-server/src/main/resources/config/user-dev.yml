@@ -1,0 +1,32 @@
+server:
+  port: 5050
+
+eureka:
+    client:
+      serviceUrl:
+          defaultZone: http://localhost:8761/eureka
+      fetch-registry: true
+      register-with-eureka: true
+
+
+spring:
+  application:
+    name: user
+
+  datasource:
+    url: jdbc:postgresql://localhost:5222/user_microservice
+    username: user_microservice
+    password: user_microservice
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        transaction:
+          jta:
+            platform: org.hibernate.engine.transaction.jta.platform.internal.BitronixJtaPlatform
+        format_sql: true
+    open-in-view: false
