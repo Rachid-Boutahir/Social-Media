@@ -9,6 +9,7 @@ import com.simplon.reaction.ReactionDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +24,7 @@ public class PostService implements Ipost {
     private final MediaServiceClient mediaServiceClient;
     private final ReactionClient reactionsClient;
     private final NotificationClient notificationClient;
+    KafkaTemplate<String,String> kafkaTemplate;
     private MapperConfig mapper;
     @Autowired
     PostService(PostRepository postRepository, MediaServiceClient mediaServiceClient, ReactionClient reactionsClient, NotificationClient notificationClient, MapperConfig mapper){
@@ -42,6 +44,7 @@ public class PostService implements Ipost {
         post.setDatePost(now.format(dateFormat));
         //Save Post
         Post postEntity = postRepository.save(mapper.modelMapper().map(post, Post.class));
+        kafkaTemplate.send("socialtopic", "Post Created with id: "+postEntity.getPostId());
         //Save Media
        if(file != null){
            MediaDTO media = mediaServiceClient.addMedia(file, postEntity.getPostId()).getBody();
